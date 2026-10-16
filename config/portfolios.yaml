@@ -1,0 +1,111 @@
+start_date: 2026-09-18
+end_date: 2026-10-16
+capital: 100000          # EUR
+
+portfolios:
+  team:
+    label: Team portfolio
+    positions:
+      - id: msci_world_eur_h
+        name: iShares MSCI World EUR Hedged (Acc)
+        isin: IE00B441G979
+        weight: 0.25
+        asset_class: Equity
+        currency: EUR
+        source: yahoo
+        ticker: IWDE.L            
+
+      - id: totalenergies
+        name: TotalEnergies SE
+        isin: FR0000120271
+        weight: 0.15
+        asset_class: Equity
+        currency: EUR
+        source: yahoo
+        ticker: TTE.PA
+
+      - id: stoxx600_banks
+        name: iShares STOXX Europe 600 Banks (DE)
+        isin: DE000A0F5UJ7
+        weight: 0.10
+        asset_class: Equity
+        currency: EUR
+        source: yahoo
+        ticker: EXV1.DE
+
+      - id: ust_0_1y
+        name: iShares $ Treasury Bond 0-1yr
+        isin: IE00BGSF1X88
+        weight: 0.25
+        asset_class: Money market
+        currency: USD
+        source: yahoo
+        ticker: IB01.L         
+
+      - id: schatz_2028
+        name: Schatz 2.70% 13/09/2028
+        isin: DE000BU22148
+        weight: 0.25
+        asset_class: Government bond
+        currency: EUR
+        source: manual
+        bond:
+          coupon: 0.027
+          freq: 1
+          day_count: ACT/ACT
+          last_coupon: 2026-09-13   
+          next_coupon: 2027-09-13
+
+  reference:
+    label: Reference portfolio
+    positions:
+      - id: jpm_us_tech
+        name: JPM US Technology A (acc) EUR Hedged
+        isin: LU2560836129
+        weight: 0.25
+        asset_class: Equity
+        currency: EUR
+        source: yahoo
+        ticker: 0P0001Q77I.F    
+
+      - id: bnp_aqua
+        name: BNP Paribas Funds Aqua Classic C
+        isin: LU1165135440
+        weight: 0.25
+        asset_class: Equity
+        currency: EUR
+        source: manual        
+
+      - id: barclays_perp
+        name: Barclays 9.625% Perp (call 15/12/2029)
+        isin: US06738ECN31
+        weight: 0.20
+        asset_class: Bank AT1 bond
+        currency: USD
+        source: manual
+        bond:
+          coupon: 0.09625
+          freq: 4
+          day_count: 30/360
+          last_coupon: 2026-09-15  
+          next_coupon: 2026-12-15
+
+      - id: renault_cp
+        name: NEU CP Renault 16/12/2026
+        isin: ""
+        weight: 0.15
+        asset_class: Money market
+        currency: EUR
+        source: formula
+        cp:
+          yield: 0.030          
+          maturity: 2026-12-16
+
+      - id: gold_eur_h
+        name: iShares Physical Gold EUR Hedged ETC
+        isin: IE0009JOT9U1
+        weight: 0.15
+        asset_class: Gold
+        currency: EUR
+        source: yahoo
+        ticker: IGLD.DE         

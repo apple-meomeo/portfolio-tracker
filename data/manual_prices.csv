@@ -1,0 +1,5 @@
+# date,id,price  -> price in the instrument's own currency
+# bonds: CLEAN price in % of par (e.g. 100.12); funds: NAV per share
+# a line for a yahoo instrument overrides Yahoo on that date
+date,id,price
+
