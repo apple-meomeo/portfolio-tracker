@@ -113,3 +113,35 @@ def currency_exposure(pos: pd.DataFrame, meta: dict) -> pd.DataFrame:
     first["currency"] = first["id"].map(lambda i: meta[i]["currency"])
     out = first.groupby(["portfolio", "currency"])["value_eur"].sum()
     return (out / out.groupby(level=0).transform("sum")).rename("weight").reset_index()
+
+
+# ---------- daily drivers: who moved the portfolio on a given day ----------
+def daily_contributions(pos_values: dict) -> pd.DataFrame:
+    """Each position's contribution to its portfolio's daily return.
+
+    Columns are (portfolio, id). For each day and portfolio, the contributions
+    add up exactly to that portfolio's daily return.
+    """
+    parts = []
+    for pf, df in pos_values.items():
+        contrib = df.diff().div(df.sum(axis=1).shift(1), axis=0)
+        contrib.columns = pd.MultiIndex.from_product([[pf], contrib.columns])
+        parts.append(contrib)
+    return pd.concat(parts, axis=1).iloc[1:]
+
+
+def biggest_gap_days(contrib: pd.DataFrame, names: dict, n: int = 8) -> pd.DataFrame:
+    """Days with the largest team-vs-reference gap, with the main driver on each side."""
+    totals = contrib.T.groupby(level=0).sum().T
+    gap = totals["team"] - totals["reference"]
+    rows = []
+    for day in gap.abs().nlargest(n).index:
+        row = {"date": day.date(), "gap (pts)": gap[day] * 100,
+               "team return (%)": totals.loc[day, "team"] * 100,
+               "reference return (%)": totals.loc[day, "reference"] * 100}
+        for pf in ("team", "reference"):
+            c = contrib.loc[day, pf]
+            top = c.abs().idxmax()
+            row[f"main driver, {pf}"] = f"{names[top]} ({c[top] * 100:+.2f} pt)"
+        rows.append(row)
+    return pd.DataFrame(rows).sort_values("date").reset_index(drop=True)

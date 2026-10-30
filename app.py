@@ -81,10 +81,35 @@ with tabs[5]:
                        "price_effect", "carry_effect", "income", "fx_effect"]].style.format("{:,.2f}"))
 
 with tabs[6]:
+    contrib = metrics.daily_contributions(d["pos_values"])
     ev = d["events"].reset_index(drop=True)
     ev.index = [f"E{i}" for i in range(1, len(ev) + 1)]
+
+    st.subheader("Key events of the period")
+    st.caption("Each event is marked E1, E2… on the cumulative chart in the first tab.")
     st.dataframe(ev, width="stretch",
                  column_config={"url": st.column_config.LinkColumn("source link")})
+
+    st.subheader("What moved the portfolios on an event day")
+    pick = st.selectbox("Event", ev.index, format_func=lambda e: f"{e} · {ev.loc[e, 'date'].date()} · {ev.loc[e, 'title']}")
+    day = ev.loc[pick, "date"]
+    trading_day = contrib.index[contrib.index <= day].max()  # weekend event -> previous trading day
+    if pd.isna(trading_day):
+        st.info("This event is before the first return of the game.")
+    else:
+        row = contrib.loc[trading_day]
+        team_r, ref_r = row["team"].sum() * 100, row["reference"].sum() * 100
+        c1, c2, c3 = st.columns(3)
+        c1.metric(labels[TEAM], f"{team_r:+.2f}%")
+        c2.metric(labels[REF], f"{ref_r:+.2f}%")
+        c3.metric("Gap (team − reference)", f"{team_r - ref_r:+.2f} pts")
+        st.plotly_chart(charts.event_drivers(row, names, labels, f"Drivers on {trading_day.date()}"), width="stretch")
+        st.markdown(f"**{ev.loc[pick, 'title']}**: {ev.loc[pick, 'summary']}")
+
+    st.subheader("Biggest gap days (computed from prices)")
+    st.caption("Use this table to find days that still need an explanation in events.csv.")
+    st.dataframe(metrics.biggest_gap_days(contrib, names).style.format(
+        {"gap (pts)": "{:+.2f}", "team return (%)": "{:+.2f}", "reference return (%)": "{:+.2f}"}), width="stretch")
 
 with tabs[7]:
     readme = Path("README.md")

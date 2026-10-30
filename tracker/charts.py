@@ -100,3 +100,19 @@ def eurusd(market: pd.DataFrame) -> go.Figure:
     fig.update_layout(title="EUR/USD (ECB reference rate). Up = euro stronger = USD assets lose value in €",
                       yaxis_title="USD per 1 EUR", **LAYOUT)
     return fig
+
+
+def event_drivers(contrib_day: pd.Series, names: dict, labels: dict, title: str) -> go.Figure:
+    """Horizontal bars: contribution of each position (in % points) to its portfolio on one day."""
+    d = contrib_day.rename("c").reset_index()
+    d.columns = ["portfolio", "id", "c"]
+    d["name"] = d["id"].map(names)
+    d = d.sort_values("c")
+    fig = go.Figure([
+        go.Bar(y=g["name"], x=g["c"] * 100, orientation="h", name=labels[pf],
+               marker_color=COLORS[pf], text=[f"{v * 100:+.2f}" for v in g["c"]], textposition="outside")
+        for pf, g in d.groupby("portfolio")
+    ])
+    fig.update_layout(title=title, xaxis_title="Contribution to the portfolio's daily return (% points)",
+                      height=480, **LAYOUT)
+    return fig
