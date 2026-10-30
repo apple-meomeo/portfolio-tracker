@@ -34,8 +34,5 @@ Daily valuation and risk analysis of two buy-and-hold portfolios (€100,000 not
     python -m tracker.update     # download and value
     python -m tracker.report     # export charts and tables
     streamlit run app.py         # dashboard
-
-## Structure
-<paste the tree from the Overview of this guide>
-
+    
 <!-- Author: Nguyễn Ngọc Nhi · M1 Finance, TSM · <LinkedIn link> -->
