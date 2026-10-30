@@ -7,10 +7,10 @@ Daily valuation and risk analysis of two buy-and-hold portfolios (€100,000 not
 18 Sep → 16 Oct 2026), built for the M1 Finance Trading Game at Toulouse School of Management.
 
 ## Result
-| Portfolio | 18 Sep | 16 Oct | P&L | Volatility | Sharpe |
-|---|---|---|---|---|---|
-| Team | €100,000 | €<...> | €<...> | <...> | <...> |
-| Reference | €100,000 | €<...> | €<...> | <...> | <...> |
+| Portfolio | 18 Sep | 16 Oct | P&L | Return | Volatility (ann.) | Max drawdown |
+|---|---:|---:|---:|---:|---:|---:|
+| **Team** | €100,000.00 | €100,815.70 | **+€815.70** | **+0.82%** | 4.84% | −1.33% |
+| Reference | €100,000.00 | €100,161.75 | +€161.75 | +0.16% | 9.89% | −2.54% |
 
 ![Cumulative performance](output/01_cumulative.png)
 
