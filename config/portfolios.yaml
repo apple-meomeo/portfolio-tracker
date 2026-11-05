@@ -98,7 +98,7 @@ portfolios:
         currency: EUR
         source: formula
         cp:
-          yield: 0.030          
+          yield: 0.0298         
           maturity: 2026-12-16
 
       - id: gold_eur_h

@@ -104,6 +104,8 @@ def build_all(cfg: dict):
     fx_usd = align(sources.fetch_eurusd(lookback, idx[-1]), idx)
     estr = align(sources.fetch_estr(lookback, idx[-1]), idx)
     manual = load_manual()
+    if "eurusd" in manual:  # official rates (e.g. from the teacher) override the ECB on those dates
+          fx_usd = align(manual.pop("eurusd").combine_first(fx_usd), idx)
     result = {
         name: build_portfolio(pf, cfg["capital"], idx, manual, fx_usd)
         for name, pf in cfg["portfolios"].items()
